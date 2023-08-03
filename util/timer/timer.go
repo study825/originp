@@ -2,12 +2,12 @@ package timer
 
 import (
 	"fmt"
-	"github.com/duanhf2012/origin/log"
-	"github.com/duanhf2012/origin/util/sync"
+	"github.com/study825/originp/log"
+	"github.com/study825/originp/util/sync"
 	"reflect"
 	"runtime"
-	"time"
 	"sync/atomic"
+	"time"
 )
 
 // ITimer
@@ -30,7 +30,7 @@ type OnAddTimer func(timer ITimer)
 // Timer
 type Timer struct {
 	Id             uint64
-	cancelled      int32          //是否关闭
+	cancelled      int32         //是否关闭
 	C              chan ITimer   //定时器管道
 	interval       time.Duration // 时间间隔（用于循环定时器）
 	fireTime       time.Time     // 触发时间
@@ -172,7 +172,7 @@ func (t *Timer) GetInterval() time.Duration {
 }
 
 func (t *Timer) Cancel() {
-	atomic.StoreInt32(&t.cancelled,1)
+	atomic.StoreInt32(&t.cancelled, 1)
 }
 
 // 判断定时器是否已经取消

@@ -2,11 +2,11 @@ package cluster
 
 import (
 	"errors"
-	"github.com/duanhf2012/origin/log"
-	"github.com/duanhf2012/origin/rpc"
-	"github.com/duanhf2012/origin/service"
+	"github.com/study825/originp/log"
+	"github.com/study825/originp/rpc"
+	"github.com/study825/originp/service"
+	"github.com/study825/originp/util/timer"
 	"time"
-	"github.com/duanhf2012/origin/util/timer"
 )
 
 const DynamicDiscoveryMasterName = "DiscoveryMaster"
@@ -63,18 +63,18 @@ func (ds *DynamicDiscoveryMaster) addNodeInfo(nodeInfo *rpc.NodeInfo) {
 }
 
 func (ds *DynamicDiscoveryMaster) removeNodeInfo(nodeId int32) {
-	if _,ok:= ds.mapNodeInfo[nodeId];ok == false {
+	if _, ok := ds.mapNodeInfo[nodeId]; ok == false {
 		return
 	}
 
-	for i:=0;i<len(ds.nodeInfo);i++ {
+	for i := 0; i < len(ds.nodeInfo); i++ {
 		if ds.nodeInfo[i].NodeId == nodeId {
-			ds.nodeInfo = append(ds.nodeInfo[:i],ds.nodeInfo[i+1:]...)
+			ds.nodeInfo = append(ds.nodeInfo[:i], ds.nodeInfo[i+1:]...)
 			break
 		}
 	}
 
-	delete(ds.mapNodeInfo,nodeId)
+	delete(ds.mapNodeInfo, nodeId)
 }
 
 func (ds *DynamicDiscoveryMaster) OnInit() error {
@@ -96,7 +96,7 @@ func (ds *DynamicDiscoveryMaster) OnStart() {
 	nodeInfo.ListenAddr = localNodeInfo.ListenAddr
 	nodeInfo.PublicServiceList = localNodeInfo.PublicServiceList
 	nodeInfo.MaxRpcParamLen = localNodeInfo.MaxRpcParamLen
-	
+
 	ds.addNodeInfo(&nodeInfo)
 }
 
@@ -309,8 +309,8 @@ func (dc *DynamicDiscoveryClient) RPC_SubServiceDiscover(req *rpc.SubscribeDisco
 
 	//删除不必要的结点
 	for _, nodeId := range willDelNodeId {
-		nodeInfo,_ := cluster.GetNodeInfo(int(nodeId))
-		cluster.TriggerDiscoveryEvent(false,int(nodeId),nodeInfo.PublicServiceList)
+		nodeInfo, _ := cluster.GetNodeInfo(int(nodeId))
+		cluster.TriggerDiscoveryEvent(false, int(nodeId), nodeInfo.PublicServiceList)
 		dc.removeMasterNode(req.MasterNodeId, int32(nodeId))
 		if dc.findNodeId(nodeId) == false {
 			dc.funDelService(int(nodeId), false)
@@ -326,7 +326,7 @@ func (dc *DynamicDiscoveryClient) RPC_SubServiceDiscover(req *rpc.SubscribeDisco
 			continue
 		}
 
-		cluster.TriggerDiscoveryEvent(true,int(nodeInfo.NodeId),nodeInfo.PublicServiceList)
+		cluster.TriggerDiscoveryEvent(true, int(nodeInfo.NodeId), nodeInfo.PublicServiceList)
 	}
 
 	return nil
@@ -346,7 +346,7 @@ func (dc *DynamicDiscoveryClient) OnNodeConnected(nodeId int) {
 	dc.regServiceDiscover(nodeId)
 }
 
-func (dc *DynamicDiscoveryClient) regServiceDiscover(nodeId int){
+func (dc *DynamicDiscoveryClient) regServiceDiscover(nodeId int) {
 	nodeInfo := cluster.GetMasterDiscoveryNodeInfo(nodeId)
 	if nodeInfo == nil {
 		return

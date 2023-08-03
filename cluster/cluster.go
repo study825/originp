@@ -2,9 +2,9 @@ package cluster
 
 import (
 	"fmt"
-	"github.com/duanhf2012/origin/log"
-	"github.com/duanhf2012/origin/rpc"
-	"github.com/duanhf2012/origin/service"
+	"github.com/study825/originp/log"
+	"github.com/study825/originp/rpc"
+	"github.com/study825/originp/service"
 	"strings"
 	"sync"
 )
@@ -26,8 +26,8 @@ type NodeInfo struct {
 	Private           bool
 	ListenAddr        string
 	MaxRpcParamLen    uint32   //最大Rpc参数长度
-	CompressBytesLen  int   //超过字节进行压缩的长度
-	ServiceList  	  []string //所有的有序服务列表
+	CompressBytesLen  int      //超过字节进行压缩的长度
+	ServiceList       []string //所有的有序服务列表
 	PublicServiceList []string //对外公开的服务列表
 	DiscoveryService  []string //筛选发现的服务，如果不配置，不进行筛选
 	NeighborService   []string
@@ -49,15 +49,14 @@ type Cluster struct {
 	localServiceCfg  map[string]interface{} //map[serviceName]配置数据*
 	serviceDiscovery IServiceDiscovery      //服务发现接口
 
-
 	locker         sync.RWMutex                //结点与服务关系保护锁
-	mapRpc           map[int]NodeRpcInfo    //nodeId
+	mapRpc         map[int]NodeRpcInfo         //nodeId
 	mapIdNode      map[int]NodeInfo            //map[NodeId]NodeInfo
 	mapServiceNode map[string]map[int]struct{} //map[serviceName]map[NodeId]
 
-	rpcServer                rpc.Server
-	rpcEventLocker           sync.RWMutex        //Rpc事件监听保护锁
-	mapServiceListenRpcEvent map[string]struct{} //ServiceName
+	rpcServer                      rpc.Server
+	rpcEventLocker                 sync.RWMutex        //Rpc事件监听保护锁
+	mapServiceListenRpcEvent       map[string]struct{} //ServiceName
 	mapServiceListenDiscoveryEvent map[string]struct{} //ServiceName
 }
 
@@ -74,7 +73,7 @@ func SetServiceDiscovery(serviceDiscovery IServiceDiscovery) {
 }
 
 func (cls *Cluster) Start() {
-	cls.rpcServer.Start(cls.localNodeInfo.ListenAddr, cls.localNodeInfo.MaxRpcParamLen,cls.localNodeInfo.CompressBytesLen)
+	cls.rpcServer.Start(cls.localNodeInfo.ListenAddr, cls.localNodeInfo.MaxRpcParamLen, cls.localNodeInfo.CompressBytesLen)
 }
 
 func (cls *Cluster) Stop() {
@@ -196,7 +195,7 @@ func (cls *Cluster) serviceDiscoverySetNodeInfo(nodeInfo *NodeInfo) {
 
 	rpcInfo := NodeRpcInfo{}
 	rpcInfo.nodeInfo = *nodeInfo
-	rpcInfo.client =rpc.NewRClient(nodeInfo.NodeId, nodeInfo.ListenAddr, nodeInfo.MaxRpcParamLen,cls.localNodeInfo.CompressBytesLen,cls.triggerRpcEvent)
+	rpcInfo.client = rpc.NewRClient(nodeInfo.NodeId, nodeInfo.ListenAddr, nodeInfo.MaxRpcParamLen, cls.localNodeInfo.CompressBytesLen, cls.triggerRpcEvent)
 	cls.mapRpc[nodeInfo.NodeId] = rpcInfo
 }
 
@@ -250,8 +249,8 @@ func (cls *Cluster) checkDynamicDiscovery(localNodeId int) (bool, bool) {
 }
 
 func (cls *Cluster) AddDynamicDiscoveryService(serviceName string, bPublicService bool) {
-	addServiceList := append([]string{},serviceName)
-	cls.localNodeInfo.ServiceList = append(addServiceList,cls.localNodeInfo.ServiceList...)
+	addServiceList := append([]string{}, serviceName)
+	cls.localNodeInfo.ServiceList = append(addServiceList, cls.localNodeInfo.ServiceList...)
 	if bPublicService {
 		cls.localNodeInfo.PublicServiceList = append(cls.localNodeInfo.PublicServiceList, serviceName)
 	}
@@ -419,7 +418,6 @@ func (cls *Cluster) UnRegRpcEvent(serviceName string) {
 	cls.rpcEventLocker.Unlock()
 }
 
-
 func (cls *Cluster) RegDiscoveryEvent(serviceName string) {
 	cls.rpcEventLocker.Lock()
 	if cls.mapServiceListenDiscoveryEvent == nil {
@@ -435,8 +433,6 @@ func (cls *Cluster) UnReDiscoveryEvent(serviceName string) {
 	delete(cls.mapServiceListenDiscoveryEvent, serviceName)
 	cls.rpcEventLocker.Unlock()
 }
-
-
 
 func HasService(nodeId int, serviceName string) bool {
 	cluster.locker.RLock()
@@ -461,7 +457,7 @@ func GetNodeByServiceName(serviceName string) map[int]struct{} {
 	}
 
 	mapNodeId := map[int]struct{}{}
-	for nodeId,_ := range mapNode {
+	for nodeId, _ := range mapNode {
 		mapNodeId[nodeId] = struct{}{}
 	}
 
@@ -472,11 +468,10 @@ func (cls *Cluster) GetGlobalCfg() interface{} {
 	return cls.globalCfg
 }
 
-
-func (cls *Cluster) GetNodeInfo(nodeId int) (NodeInfo,bool) {
+func (cls *Cluster) GetNodeInfo(nodeId int) (NodeInfo, bool) {
 	cls.locker.RLock()
 	defer cls.locker.RUnlock()
 
-	nodeInfo,ok:= cls.mapIdNode[nodeId]
-	return nodeInfo,ok
+	nodeInfo, ok := cls.mapIdNode[nodeId]
+	return nodeInfo, ok
 }

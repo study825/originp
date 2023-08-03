@@ -14,10 +14,10 @@ origin 解决的问题：
 Hello world!
 ------------
 
-下面我们来一步步的建立origin服务器,先下载[origin引擎](https://github.com/duanhf2012/origin "origin引擎"),或者使用如下命令：
+下面我们来一步步的建立origin服务器,先下载[origin引擎](https://github.com/study825/originp "origin引擎"),或者使用如下命令：
 
 ```go
-go get -v -u  github.com/duanhf2012/origin
+go get -v -u  github.com/study825/originp
 ```
 
 于是下载到GOPATH环境目录中,在src中加入main.go,内容如下：
@@ -26,7 +26,7 @@ go get -v -u  github.com/duanhf2012/origin
 package main
 
 import (
-	"github.com/duanhf2012/origin/node"
+	"github.com/study825/originp/node"
 )
 
 func main() {
@@ -219,8 +219,8 @@ simple_service/TestService1.go如下：
 package simple_service
 
 import (
-	"github.com/duanhf2012/origin/node"
-	"github.com/duanhf2012/origin/service"
+	"github.com/study825/originp/node"
+	"github.com/study825/originp/service"
 )
 
 //模块加载时自动安装TestService1服务
@@ -249,8 +249,8 @@ simple_service/TestService2.go如下：
 
 ```
 import (
-	"github.com/duanhf2012/origin/node"
-	"github.com/duanhf2012/origin/service"
+	"github.com/study825/originp/node"
+	"github.com/study825/originp/service"
 )
 
 func init(){
@@ -274,7 +274,7 @@ func (slf *TestService2) OnInit() error {
 package main
 
 import (
-	"github.com/duanhf2012/origin/node"
+	"github.com/study825/originp/node"
 	//导入simple_service模块
 	_"orginserver/simple_service"
 )
@@ -453,8 +453,8 @@ package simple_module
 
 import (
 	"fmt"
-	"github.com/duanhf2012/origin/node"
-	"github.com/duanhf2012/origin/service"
+	"github.com/study825/originp/node"
+	"github.com/study825/originp/service"
 )
 
 func init(){
@@ -533,9 +533,9 @@ Module1 Release.
 package simple_event
 
 import (
-	"github.com/duanhf2012/origin/event"
-	"github.com/duanhf2012/origin/node"
-	"github.com/duanhf2012/origin/service"
+	"github.com/study825/originp/event"
+	"github.com/study825/originp/node"
+	"github.com/study825/originp/service"
 	"time"
 )
 
@@ -578,9 +578,9 @@ package simple_event
 
 import (
 	"fmt"
-	"github.com/duanhf2012/origin/event"
-	"github.com/duanhf2012/origin/node"
-	"github.com/duanhf2012/origin/service"
+	"github.com/study825/originp/event"
+	"github.com/study825/originp/node"
+	"github.com/study825/originp/service"
 )
 
 func init(){
@@ -649,8 +649,8 @@ simple_rpc/TestService6.go文件如下：
 package simple_rpc
 
 import (
-	"github.com/duanhf2012/origin/node"
-	"github.com/duanhf2012/origin/service"
+	"github.com/study825/originp/node"
+	"github.com/study825/originp/service"
 )
 
 func init(){
@@ -685,8 +685,8 @@ package simple_rpc
 
 import (
 	"fmt"
-	"github.com/duanhf2012/origin/node"
-	"github.com/duanhf2012/origin/service"
+	"github.com/study825/originp/node"
+	"github.com/study825/originp/service"
 	"time"
 )
 
@@ -900,9 +900,9 @@ package simple_http
 
 import (
 	"fmt"
-	"github.com/duanhf2012/origin/node"
-	"github.com/duanhf2012/origin/service"
-	"github.com/duanhf2012/origin/sysservice"
+	"github.com/study825/originp/node"
+	"github.com/study825/originp/service"
+	"github.com/study825/originp/sysservice"
 	"net/http"
 )
 
@@ -979,10 +979,10 @@ package simple_tcp
 
 import (
 	"fmt"
-	"github.com/duanhf2012/origin/network/processor"
-	"github.com/duanhf2012/origin/node"
-	"github.com/duanhf2012/origin/service"
-	"github.com/duanhf2012/origin/sysservice"
+	"github.com/study825/originp/network/processor"
+	"github.com/study825/originp/node"
+	"github.com/study825/originp/service"
+	"github.com/study825/originp/sysservice"
 	"github.com/golang/protobuf/proto"
 	"orginserver/simple_tcp/msgpb"
 )
@@ -1059,7 +1059,7 @@ func (slf *TestTcpService) OnRequest (clientid uint64,msg proto.Message){
 
 **欢迎加入origin服务器开发QQ交流群:168306674，有任何疑问我都会及时解答**
 
-提交bug及特性: https://github.com/duanhf2012/origin/issues
+提交bug及特性: https://github.com/study825/originp/issues
 
 [因服务器是由个人维护，如果这个项目对您有帮助，您可以点我进行捐赠，感谢！](http://www.cppblog.com/images/cppblog_com/API/21416/r_pay.jpg "Thanks!")
 

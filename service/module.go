@@ -6,11 +6,11 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/duanhf2012/origin/event"
-	"github.com/duanhf2012/origin/log"
-	rpcHandle "github.com/duanhf2012/origin/rpc"
-	"github.com/duanhf2012/origin/util/timer"
-	"github.com/duanhf2012/origin/concurrent"
+	"github.com/study825/originp/concurrent"
+	"github.com/study825/originp/event"
+	"github.com/study825/originp/log"
+	rpcHandle "github.com/study825/originp/rpc"
+	"github.com/study825/originp/util/timer"
 )
 
 const InitModuleId = 1e9
@@ -277,7 +277,7 @@ func (m *Module) SafeNewTicker(tickerId *uint64, d time.Duration, AdditionData i
 }
 
 func (m *Module) CancelTimerId(timerId *uint64) bool {
-	if timerId==nil || *timerId == 0 {
+	if timerId == nil || *timerId == 0 {
 		log.SWarning("timerId is invalid")
 		return false
 	}

@@ -3,13 +3,13 @@ package node
 import (
 	"errors"
 	"fmt"
-	"github.com/duanhf2012/origin/cluster"
-	"github.com/duanhf2012/origin/console"
-	"github.com/duanhf2012/origin/log"
-	"github.com/duanhf2012/origin/profiler"
-	"github.com/duanhf2012/origin/service"
-	"github.com/duanhf2012/origin/util/buildtime"
-	"github.com/duanhf2012/origin/util/timer"
+	"github.com/study825/originp/cluster"
+	"github.com/study825/originp/console"
+	"github.com/study825/originp/log"
+	"github.com/study825/originp/profiler"
+	"github.com/study825/originp/service"
+	"github.com/study825/originp/util/buildtime"
+	"github.com/study825/originp/util/timer"
 	"io"
 	slog "log"
 	"net/http"
@@ -30,12 +30,13 @@ var bValid bool
 var configDir = "./config/"
 var logLevel string = "debug"
 var logPath string
+
 type BuildOSType = int8
 
-const(
+const (
 	Windows BuildOSType = 0
-	Linux 	BuildOSType = 1
-	Mac   	BuildOSType = 2
+	Linux   BuildOSType = 1
+	Mac     BuildOSType = 2
 )
 
 func init() {
@@ -154,7 +155,7 @@ func initNode(id int) {
 
 	//2.顺序安装服务
 	serviceOrder := cluster.GetCluster().GetLocalNodeInfo().ServiceList
-	for _,serviceName:= range serviceOrder{
+	for _, serviceName := range serviceOrder {
 		bSetup := false
 		for _, s := range preSetupService {
 			if s.GetName() != serviceName {
@@ -168,7 +169,7 @@ func initNode(id int) {
 		}
 
 		if bSetup == false {
-			log.SFatal("Service name "+serviceName+" configuration error")
+			log.SFatal("Service name " + serviceName + " configuration error")
 		}
 	}
 

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"runtime"
 
-	"github.com/duanhf2012/origin/log"
+	"github.com/study825/originp/log"
 )
 
 const defaultMaxTaskChannelNum = 1000000
@@ -60,7 +60,7 @@ func (c *Concurrent) AsyncDoByQueue(queueId int64, fn func() bool, cb func(err e
 	}
 
 	if queueId != 0 {
-		queueId = queueId % maxTaskQueueSessionId+1
+		queueId = queueId%maxTaskQueueSessionId + 1
 	}
 
 	select {

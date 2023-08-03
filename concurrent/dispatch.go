@@ -8,11 +8,12 @@ import (
 	"fmt"
 	"runtime"
 
-	"github.com/duanhf2012/origin/log"
-	"github.com/duanhf2012/origin/util/queue"
+	"github.com/study825/originp/log"
+	"github.com/study825/originp/util/queue"
 )
 
 var idleTimeout = int64(2 * time.Second)
+
 const maxTaskQueueSessionId = 10000
 
 type dispatch struct {
@@ -65,7 +66,7 @@ func (d *dispatch) run() {
 			case <-timeout.C:
 				d.processTimer()
 				if atomic.LoadInt32(&d.minConcurrentNum) == -1 && len(d.tasks) == 0 {
-					atomic.StoreInt64(&idleTimeout,int64(time.Millisecond * 10))
+					atomic.StoreInt64(&idleTimeout, int64(time.Millisecond*10))
 				}
 				timeout.Reset(time.Duration(atomic.LoadInt64(&idleTimeout)))
 			}

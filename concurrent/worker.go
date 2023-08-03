@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"runtime"
 
-	"github.com/duanhf2012/origin/log"
+	"github.com/study825/originp/log"
 )
 
 type task struct {
@@ -60,15 +60,15 @@ func (w *worker) exec(t *task) {
 				cb(errors.New(errString))
 			}
 
-			w.endCallFun(true,t)
+			w.endCallFun(true, t)
 			log.SError("core dump info[", errString, "]\n", string(buf[:l]))
 		}
 	}()
 
-	w.endCallFun(t.fn(),t)
+	w.endCallFun(t.fn(), t)
 }
 
-func (w *worker) endCallFun(isDocallBack bool,t *task) {
+func (w *worker) endCallFun(isDocallBack bool, t *task) {
 	if isDocallBack {
 		w.pushAsyncDoCallbackEvent(t.cb)
 	}

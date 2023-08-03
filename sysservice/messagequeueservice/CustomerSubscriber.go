@@ -3,10 +3,10 @@ package messagequeueservice
 import (
 	"errors"
 	"fmt"
-	"github.com/duanhf2012/origin/cluster"
-	"github.com/duanhf2012/origin/log"
-	"github.com/duanhf2012/origin/rpc"
-	"github.com/duanhf2012/origin/util/coroutine"
+	"github.com/study825/originp/cluster"
+	"github.com/study825/originp/log"
+	"github.com/study825/originp/rpc"
+	"github.com/study825/originp/util/coroutine"
 	"strings"
 	"sync/atomic"
 	"time"
@@ -24,7 +24,7 @@ type CustomerSubscriber struct {
 	subscribeMethod   SubscribeMethod
 	customerId        string
 
-	isStop int32 //退出标记
+	isStop     int32       //退出标记
 	topicCache []TopicData // 从消息队列中取出来的消息的缓存
 }
 
@@ -163,9 +163,9 @@ func (cs *CustomerSubscriber) subscribe() bool {
 		cs.publishToCustomer(topicData)
 		return true
 	}
-	
+
 	//从持久化数据中来找
-	topicData = cs.subscriber.dataPersist.FindTopicData(cs.topic, cs.StartIndex, int64(cs.oneBatchQuantity),cs.topicCache[:0])
+	topicData = cs.subscriber.dataPersist.FindTopicData(cs.topic, cs.StartIndex, int64(cs.oneBatchQuantity), cs.topicCache[:0])
 	return cs.publishToCustomer(topicData)
 }
 
@@ -213,7 +213,7 @@ func (cs *CustomerSubscriber) publishToCustomer(topicData []TopicData) bool {
 		}
 
 		//推送数据
-		err := cs.CallNodeWithTimeout(4*time.Minute,cs.fromNodeId, cs.callBackRpcMethod, &dbQueuePublishReq, &dbQueuePushRes)
+		err := cs.CallNodeWithTimeout(4*time.Minute, cs.fromNodeId, cs.callBackRpcMethod, &dbQueuePublishReq, &dbQueuePushRes)
 		if err != nil {
 			time.Sleep(time.Second * 1)
 			continue
