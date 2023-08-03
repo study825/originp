@@ -3,6 +3,7 @@ package rpc
 import (
 	"errors"
 	"fmt"
+	"github.com/pierrec/lz4/v4"
 	"github.com/study825/originp/network"
 	"runtime"
 )
